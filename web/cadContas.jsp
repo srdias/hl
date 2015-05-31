@@ -31,10 +31,10 @@
                 $scope.editando = false;
 
             <%
-                out.print(formulario.functionCarregaJson("/hl04/json/contas.jsp", "$scope.lista"));
+                out.print(formulario.functionCarregaJson("/hl/json/contas.jsp", "$scope.lista"));
                 out.print(formulario.functionVoltar());
                 out.print(formulario.functionEditar());
-                out.print(formulario.functionGravar("/hl04/cadContasGravar.jsp"));
+                out.print(formulario.functionGravar("/hl/cadContasGravar.jsp"));
             %>
 
             });

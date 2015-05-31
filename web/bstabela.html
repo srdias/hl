@@ -19,12 +19,12 @@ and open the template in the editor.
                 $scope.lista = [];
                 $scope.contas = [];
 
-                $http.post("/hl04/testeResultSetJson.jsp").success(function (data, status) {
+                $http.post("/hl/testeResultSetJson.jsp").success(function (data, status) {
                     $scope.lista = data;
                 });
 
 
-                $http.post("/hl04/json/contas.jsp").success(function (data, status) {
+                $http.post("/hl/json/contas.jsp").success(function (data, status) {
                     $scope.contas = data;
                     $scope.contaForm = $scope.contas[1];
                 });

@@ -40,11 +40,11 @@
                 $scope.editando = false;
 
             <%
-                out.print(formulario.functionCarregaJson("/hl04/json/clientes.jsp", "$scope.lista"));
-                out.print(formulario.functionCarregaJson("/hl04/json/cidades.jsp", "$scope.cidades"));
+                out.print(formulario.functionCarregaJson("/hl/json/clientes.jsp", "$scope.lista"));
+                out.print(formulario.functionCarregaJson("/hl/json/cidades.jsp", "$scope.cidades"));
                 out.print(formulario.functionVoltar());
                 out.print(formulario.functionEditar());
-                out.print(formulario.functionGravar("/hl04/cadClientesGravar.jsp"));
+                out.print(formulario.functionGravar("/hl/cadClientesGravar.jsp"));
             %>
 
             });
