@@ -43,14 +43,11 @@
     </head>
     <body>
         <section id="tables">
-
+            <div class="page-header">
+                    <jsp:include page="menu.html" />
+            </div>
             <div ng-app="mainApp" ng-controller="cadcontas" >
                 <div class="container">
-
-                    
-
-
-                    {{lista2}} - {{resultado}}
                     <div class="row" ng-hide="!editando">
                         <div class="col-lg-8">
                             <%

@@ -31,53 +31,50 @@
             tabela.addColuna(new TableColuna("preco", "Preços"));
             tabela.addColuna(new TableColuna("taxas", "Taxas"));
         %>
-    <script>
-        $(function(){
-        $("#includedContent").load("menu.html"); 
-        });
-    </script> 
-    <script>
-        var mainApp = angular.module("mainApp", []);
 
-        mainApp.controller('cadclientes', function ($scope, $http) {
-            $scope.lista = [];
-            $scope.editando = false;
+        <script>
+            var mainApp = angular.module("mainApp", []);
 
-        <%
+            mainApp.controller('cadclientes', function ($scope, $http) {
+                $scope.lista = [];
+                $scope.editando = false;
+
+            <%
                 out.print(formulario.functionCarregaJson("/hl04/json/clientes.jsp", "$scope.lista"));
                 out.print(formulario.functionCarregaJson("/hl04/json/cidades.jsp", "$scope.cidades"));
                 out.print(formulario.functionVoltar());
                 out.print(formulario.functionEditar());
                 out.print(formulario.functionGravar("/hl04/cadClientesGravar.jsp"));
-        %>
+            %>
 
-        });
+            });
 
-    </script>
-</head>
-<body>
-    <section id="tables">
-        <div class="page-header">
-        </div>
-        <div ng-app="mainApp" ng-controller="cadclientes" >
-            <div class="container">
-                <div id="includedContent"></div>
-                Gravar: {{lista2}} - {{resultado}}
-                <div class="row" ng-hide="!editando">
-                    <div class="col-lg-8">
-                        <% formulario.buildForm(out); %>
+        </script>
+    </head>
+    <body>
+        <section id="tables">
+            <div class="page-header">
+                <jsp:include page="menu.html" />
+            </div>
+            <div ng-app="mainApp" ng-controller="cadclientes" >
+                <div class="container">
+                    <div id="includedContent"></div>
+                    Gravar: {{lista2}} - {{resultado}}
+                    <div class="row" ng-hide="!editando">
+                        <div class="col-lg-8">
+                            <% formulario.buildForm(out); %>
+                        </div>
                     </div>
-                </div>
 
-                <div class="row" ng-hide="editando">
-                    <div class="col-lg-8">
-                        <% tabela.buildTable(out);%>
+                    <div class="row" ng-hide="editando">
+                        <div class="col-lg-8">
+                            <% tabela.buildTable(out);%>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-    </section>
+        </section>
 
-</body>
+    </body>
 </html>
