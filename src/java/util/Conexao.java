@@ -22,11 +22,16 @@ public class Conexao {
 
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/hidrolive?"
-                            + "user=root&password=");
 
-    // Do something with the Connection
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/hidrolive?"
+                    + "user=root&password=");
+
+            /*
+             Class.forName("org.sqlite.JDBC");
+             c = DriverManager.getConnection("jdbc:sqlite:test.db");
+             System.out.println("Opened database successfully");
+             */
+            // Do something with the Connection
         } catch (SQLException ex) {
             // handle any errors
             System.out.println("SQLException: " + ex.getMessage());
@@ -35,7 +40,7 @@ public class Conexao {
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
             Logger.getLogger(Conexao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return conn;
     }
 }

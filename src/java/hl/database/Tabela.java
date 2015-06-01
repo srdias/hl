@@ -32,14 +32,30 @@ public class Tabela {
         colunas.add(coluna);
     }
 
-    public void setValor(String nomeColuna, String valor) {
-        //System.out.println("Setando:"+nomeColuna+"="+valor);
+    public Coluna findColuna(String nomeColuna) {
+        Coluna colunaRetorno = null;
         for (Coluna coluna : colunas) {
             if (coluna.getNome().equals(nomeColuna)) {
-                coluna.setValor(valor);
+                colunaRetorno = coluna;
                 break;
             }
         }
+        return colunaRetorno;
+    }
+
+    public void setNulo(String nomeColuna, boolean nulo) {
+        Coluna coluna = findColuna(nomeColuna);
+        if (coluna != null) {
+            coluna.setNulo(nulo);
+        }
+    }
+
+    public void setValor(String nomeColuna, String valor) {
+        Coluna coluna = findColuna(nomeColuna);
+        if (coluna != null) {
+            coluna.setValor(valor);
+        }
+
     }
 
     public void parseJsonRequest(HttpServletRequest request) {
@@ -176,10 +192,10 @@ public class Tabela {
     }
 
     public String update() {
-        
-        String retorno="";
-        String acao="";
-        
+
+        String retorno = "";
+        String acao = "";
+
         try {
             Connection con = util.Conexao.conexao();
             java.sql.Statement s;
@@ -205,11 +221,31 @@ public class Tabela {
             obj.put("Comando", comando);
 
             retorno = obj.toString();
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(Tabela.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return retorno;
+    }
+
+    public String getCmdCreateTable() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("CREATE TABLE ");
+        sb.append(getNome());
+        sb.append("(\n");
+        int conta = 0;
+        for (Coluna coluna : colunas) {
+            if (conta != 0) {
+                sb.append(",\n");
+            }
+            conta++;
+                sb.append("\t");
+                sb.append(coluna.getDefinicaoCreateTable());
+        }
+        sb.append("\n)");
+
+        return sb.toString();
     }
 }

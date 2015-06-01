@@ -4,6 +4,8 @@
     Author     : AdrianoNB
 --%>
 
+<%@page import="hl.database.Tabela"%>
+<%@page import="hl.database.DataBase"%>
 <%@page import="org.json.JSONArray"%>
 <%@page import="util.ResultSetConverter"%>
 <%@page import="java.sql.SQLException"%>
@@ -17,21 +19,19 @@
     </head>
     <body>
         <%
-            String sql = "select * from contasreceber";
-            try {
-                Connection con = util.Conexao.conexao();
-                java.sql.Statement s;
-                java.sql.ResultSet rs;
-                s = con.createStatement();
-                rs = s.executeQuery(sql);
-                while (rs.next()) {
-                    out.println(rs.getInt(1));
-                    out.println(rs.getString(2));
-                }
-            } catch (SQLException e) {
-               System.out.println(e.getStackTrace());
-            }
+            Tabela tabela;
+            tabela = DataBase.getContasReceber();
+            out.print("\n"
+                    + tabela.getCmdCreateTable()
+                    .replaceAll("\n", "<br>")
+                    .replaceAll("\t", "&nbsp;&nbsp;&nbsp;"));
             
+            tabela = DataBase.getContasReceberDetalhamento();
+            out.print("<BR><BR>\n"
+                    + tabela.getCmdCreateTable()
+                    .replaceAll("\n", "<br>")
+                    .replaceAll("\t", "&nbsp;&nbsp;&nbsp;"));
+
         %>
     </body>
 </html>
