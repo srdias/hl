@@ -34,6 +34,7 @@
                 out.print(formulario.functionCarregaJson("/hl/json/contas.jsp", "$scope.lista"));
                 out.print(formulario.functionVoltar());
                 out.print(formulario.functionEditar());
+                out.print(formulario.functionNovo());
                 out.print(formulario.functionGravar("/hl/cadContasGravar.jsp"));
             %>
 
@@ -61,6 +62,7 @@
                             <%
                                 tabela.buildTable(out);
                             %>
+                            <button type="submit" ng-click="NovoRegistro()" class="btn btn-primary">Novo</button>
                         </div>
                     </div>
                 </div>

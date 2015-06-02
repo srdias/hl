@@ -1,31 +1,43 @@
 package hl.database;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import javax.servlet.jsp.JspWriter;
 
 public class DataBase {
 
-    public void createDataBase() {
+    public void createDataBase(JspWriter out) throws IOException {
 
-        createTable(getClientes());
-        createTable(getContas());
-        createTable(getContasReceber());
-        createTable(getContasReceberDetalhamento());
+        createTable(out, getCidades());
+        createTable(out, getClientes());
+        createTable(out, getContas());
+        createTable(out, getContasReceber());
+        createTable(out, getContasReceberDetalhamento());
     }
 
-    public void createTable(Tabela tabela) {
+    public void createTable(JspWriter out, Tabela tabela) throws IOException {
 
-//        try {
-//            Connection con = util.Conexao.conexao();
-//            java.sql.Statement s;
-//            java.sql.ResultSet rs;
-//            s = con.createStatement();
-//
-//            s.executeUpdate(tabela.getCmdCreateTable());
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+        StringBuilder sb = new StringBuilder();
 
+        sb.append("<li>Criando tabela '");
+        sb.append(tabela.getNome());
+        sb.append("' - ");
+        try {
+            Connection con = util.Conexao.conexao();
+            java.sql.Statement s;
+            java.sql.ResultSet rs;
+            s = con.createStatement();
+
+            s.executeUpdate(tabela.getCmdCreateTable());
+
+            sb.append("OK");
+        } catch (SQLException e) {
+            sb.append("ERRO: ").append(e.getMessage());
+            e.printStackTrace();
+        }
+
+        out.println(sb.toString());
     }
 
     public static Tabela getClientes() {
@@ -43,12 +55,23 @@ public class DataBase {
         Tabela tabela = new Tabela("contas");
         tabela.addColuna(new Coluna("id", java.sql.Types.INTEGER, true));
         tabela.addColuna(new Coluna("nome", java.sql.Types.CHAR, 60));
+        
+        tabela.setValorInicial("id","");
+        tabela.setValorInicial("nome","");
+        
+        return tabela;
+    }
+
+    public static Tabela getCidades() {
+        Tabela tabela = new Tabela("cidades");
+        tabela.addColuna(new Coluna("id", java.sql.Types.INTEGER, true));
+        tabela.addColuna(new Coluna("nome", java.sql.Types.CHAR, 60));
         return tabela;
     }
 
     public static Tabela getContasReceber() {
 
-        Tabela tabela = new Tabela("contasReceber2");
+        Tabela tabela = new Tabela("contasReceber");
         tabela.addColuna(new Coluna("id", java.sql.Types.INTEGER, true));
         tabela.addColuna(new Coluna("id_clientes", java.sql.Types.INTEGER));
         tabela.addColuna(new Coluna("dt_emissao", java.sql.Types.DATE));

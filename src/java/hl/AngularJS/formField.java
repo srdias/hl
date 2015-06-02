@@ -48,6 +48,15 @@ public abstract class formField extends formObject {
         return sb.toString();
     }
     
+    public String getNovoInicializacao() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("$scope.");
+        sb.append(this.getName());
+        sb.append(" = '");
+        sb.append("'");
+        return sb.toString();
+    }
+    
     public String getDataToDB(){
         return "$scope."+this.getName();
     }

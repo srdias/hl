@@ -21,23 +21,22 @@ public class Conexao {
         Connection conn = null;
 
         try {
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
+//            Class.forName("com.mysql.jdbc.Driver").newInstance();
+//
+//            conn = DriverManager.getConnection("jdbc:mysql://localhost/hidrolive?"
+//                    + "user=root&password=");
 
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/hidrolive?"
-                    + "user=root&password=");
-
-            /*
+            
              Class.forName("org.sqlite.JDBC");
-             c = DriverManager.getConnection("jdbc:sqlite:test.db");
-             System.out.println("Opened database successfully");
-             */
+             conn = DriverManager.getConnection("jdbc:sqlite:\\fontes\\hl\\databaseSqLite\\hl.db");
+             
             // Do something with the Connection
         } catch (SQLException ex) {
             // handle any errors
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(Conexao.class.getName()).log(Level.SEVERE, null, ex);
         }
 

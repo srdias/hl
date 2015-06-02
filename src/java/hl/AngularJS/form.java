@@ -132,6 +132,26 @@ public class form {
 
     }
 
+    public String functionNovo() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("\n\t\t\t\t");
+        sb.append("$scope.NovoRegistro = function(rec) {").append("\n");
+
+        for (formField field : fields) {
+            sb.append("\t\t\t\t\t");
+            sb.append(field.getNovoInicializacao());
+            sb.append(";\n");
+        }
+
+        sb.append("\t\t\t\t");
+        sb.append("\t$scope.editando = true;").append("\n");
+        sb.append("\t\t\t\t}\n");
+
+        return sb.toString();
+
+    }
+
     public String functionCarregaJson(String url, String variavelLista) {
 
         StringBuilder sb = new StringBuilder();

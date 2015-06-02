@@ -15,6 +15,7 @@ public class Coluna {
     private String nome;
     private boolean pk;
     private String valor;
+    private String valorInicial;
     private Integer tamanho;
     private boolean nulo;
 
@@ -126,5 +127,16 @@ public class Coluna {
         }
 
         return sb.toString();
+    }
+
+    public String getValorInicial() {
+        if(valorInicial==null){
+            valorInicial="";
+        }
+        return valorInicial;
+    }
+
+    public void setValorInicial(String valorInicial) {
+        this.valorInicial = valorInicial;
     }
 }

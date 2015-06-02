@@ -58,6 +58,14 @@ public class Tabela {
 
     }
 
+    public void setValorInicial(String nomeColuna, String valor) {
+        Coluna coluna = findColuna(nomeColuna);
+        if (coluna != null) {
+            coluna.setValorInicial(valor);
+        }
+
+    }
+
     public void parseJsonRequest(HttpServletRequest request) {
         JSONObject post = ServicosHttp.getPostJson(request);
         this.parseJson(post);
