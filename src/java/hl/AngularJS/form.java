@@ -1,18 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package hl.AngularJS;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import javax.servlet.jsp.JspWriter;
 
-/**
- *
- * @author AdrianoNB
- */
 public class form {
 
     ArrayList<formField> fields;
@@ -20,23 +10,9 @@ public class form {
     String titulo;
 
     public form() {
-        //campos = new ArrayList<>();
         fields = new ArrayList<>();
         botoes = new ArrayList<>();
         titulo = "";
-    }
-
-    public void htmlHeader(JspWriter out, String titulo) throws IOException {
-        String header = "<title>" + titulo + "</title>\n"
-                + "        <meta charset=\"UTF-8\">\n"
-                + "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
-                + "        <link href=\"css/bootstrap.min.css\" rel=\"stylesheet\">\n"
-                + "        <link href=\"css/styles.css\" rel=\"stylesheet\">\n"
-                + "        <script src=\"js/angular.min.js\" type=\"text/javascript\"></script>"
-                + "        <script src=\"js/jquery.min.js\"></script>\n"
-                + "        <script src=\"js/bootstrap.min.js\"></script>";
-
-        out.print(header);
     }
 
     public void setTitulo(String titulo) {
@@ -82,7 +58,7 @@ public class form {
 
     }
 
-    public void buildForm(JspWriter out) throws IOException {
+    public String buildForm() {
 
         StringBuilder sb = new StringBuilder();
 
@@ -109,7 +85,7 @@ public class form {
                 + "</form>"
         );
 
-        out.print(sb.toString());
+        return sb.toString();
     }
 
     public String functionEditar() {

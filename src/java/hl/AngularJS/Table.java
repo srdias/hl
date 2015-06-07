@@ -27,39 +27,39 @@ public class Table extends Html {
         colunas.add(coluna);
     }
 
-    public void buildTable(JspWriter out) throws IOException {
+    public String buildTable(){
         StringBuilder sb = new StringBuilder();
 
-        sb.append("<table class=\"table table-bordered table-striped table-hover\">");
+        sb.append("<table class=\"table table-bordered table-striped table-hover\">\n");
 
-        sb.append("<thead>");
-        sb.append("<tr>");
+        sb.append("<thead>\n");
+        sb.append("<tr>\n");
         for (TableColuna coluna : colunas) {
             sb.append("<th>");
             sb.append(coluna.getLabel());
-            sb.append("</th>");
+            sb.append("</th>\n");
         }
-        sb.append("</tr>");
-        sb.append("</thead>");
+        sb.append("</tr>\n");
+        sb.append("</thead>\n");
 
-        sb.append("<tbody>");
+        sb.append("<tbody>\n");
         sb.append("<tr ");
         sb.append(getProp("ng-repeat", "item in " + getJsonData()));
         sb.append(" ");
-        sb.append(getProp("ng-click", "Editar(item)"));
-        sb.append(">");
+        sb.append(getProp("ng-click", "page.actionEditar(item.id)"));
+        sb.append(">\n");
 
         for (TableColuna coluna : colunas) {
             sb.append("<td>{{item.");
             sb.append(coluna.getName());
-            sb.append("}}</td>");
+            sb.append("}}</td>\n");
         }
 
-        sb.append("</tr>");
-        sb.append("</tbody>");
-        sb.append("</table>");
+        sb.append("</tr>\n");
+        sb.append("</tbody>\n");
+        sb.append("</table>\n");
 
-        out.print(sb.toString());
+        return sb.toString();
     }
 
     public String getJsonData() {

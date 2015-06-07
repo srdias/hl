@@ -20,7 +20,7 @@ public abstract class formField extends formObject {
     }
 
     public String getName() {
-        return "reg_"+name;
+        return "page.recEdit."+name;
     }
 
     public String getDBName() {

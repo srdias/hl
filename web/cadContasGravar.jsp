@@ -4,6 +4,6 @@
 <%
     Tabela tabela = DataBase.getContas();
     tabela.parseJsonRequest(request);
-    out.print(tabela.update());
+    out.print(tabela.retornoGravacao());
 %>
 

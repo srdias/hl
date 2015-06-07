@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
+import org.json.JSONException;
 import org.json.JSONObject;
 import util.ServicosHttp;
 
@@ -22,6 +23,7 @@ public class Tabela {
 
     private ArrayList<Coluna> colunas;
     private String nome;
+    public JSONObject post;
 
     public Tabela(String nome) {
         this.nome = nome;
@@ -58,6 +60,15 @@ public class Tabela {
 
     }
 
+    public String getValor(String nomeColuna) {
+        String valor = "";
+        Coluna coluna = findColuna(nomeColuna);
+        if (coluna != null) {
+            valor = coluna.getValor();
+        }
+        return valor;
+    }
+
     public void setValorInicial(String nomeColuna, String valor) {
         Coluna coluna = findColuna(nomeColuna);
         if (coluna != null) {
@@ -67,13 +78,18 @@ public class Tabela {
     }
 
     public void parseJsonRequest(HttpServletRequest request) {
-        JSONObject post = ServicosHttp.getPostJson(request);
+        post = ServicosHttp.getPostJson(request);
         this.parseJson(post);
     }
 
     public void parseJson(JSONObject json) {
         for (Coluna coluna : colunas) {
-            setValor(coluna.getNome(), json.get(coluna.getNome()).toString());
+            try {
+                setValor(coluna.getNome(), json.get(coluna.getNome()).toString());
+            } catch (JSONException ex) {
+                setValor(coluna.getNome(), "");
+                System.err.println("Erro lendo coluna: " + coluna.getNome());
+            }
         }
     }
 
@@ -142,6 +158,26 @@ public class Tabela {
         return sb.toString();
     }
 
+    public String getCmdSelectNovaChave() {
+        StringBuilder sb = new StringBuilder();
+        StringBuilder sbColunas = new StringBuilder();
+
+        for (Coluna coluna : colunas) {
+            if (coluna.isPk()) {
+                sbColunas.append("max(");
+                sbColunas.append(coluna.getNome());
+                sbColunas.append(") as maior");
+            }
+        }
+
+        sb.append("SELECT ");
+        sb.append(sbColunas.toString());
+        sb.append(" FROM ");
+        sb.append(getNome());
+
+        return sb.toString();
+    }
+
     public String getCmdDelete() {
         StringBuilder sb = new StringBuilder();
         StringBuilder sbWhere = new StringBuilder();
@@ -199,6 +235,31 @@ public class Tabela {
         this.nome = nome;
     }
 
+    public int getProximoID(Connection con) {
+
+        int retorno = 0;
+
+        try {
+            java.sql.Statement s;
+            java.sql.ResultSet rs;
+            s = con.createStatement();
+
+            String existeRegistro = this.getCmdSelectNovaChave();
+
+            rs = s.executeQuery(existeRegistro);
+            if (rs.next()) {
+                retorno = rs.getInt("maior");
+            }
+            rs.close();
+
+        } catch (SQLException ex) {
+        }
+
+        retorno++;
+
+        return retorno;
+    }
+
     public String update() {
 
         String retorno = "";
@@ -212,6 +273,7 @@ public class Tabela {
 
             String existeRegistro = this.getCmdSelect();
 
+            System.out.println(existeRegistro);
             rs = s.executeQuery(existeRegistro);
             String comando;
             if (rs.next()) {
@@ -219,7 +281,13 @@ public class Tabela {
                 comando = this.getCmdUpdate();
             } else {
                 acao = "Nao existe";
+                System.out.println("acao:" + acao);
+
+                if (this.getValor("id").equals("0")) {
+                    this.setValor("id", Integer.toString(this.getProximoID(con)));
+                }
                 comando = this.getCmdInsert();
+                System.out.println("comando:" + comando);
             }
 
             s.executeUpdate(comando);
@@ -249,11 +317,19 @@ public class Tabela {
                 sb.append(",\n");
             }
             conta++;
-                sb.append("\t");
-                sb.append(coluna.getDefinicaoCreateTable());
+            sb.append("\t");
+            sb.append(coluna.getDefinicaoCreateTable());
         }
         sb.append("\n)");
 
         return sb.toString();
+    }
+
+    public String retornoGravacao() {
+        JSONObject obj = new JSONObject();
+        obj.put("comando", this.update());
+        this.post.put("id", getValor("id"));
+        obj.put("rec", this.post);
+        return obj.toString();
     }
 }

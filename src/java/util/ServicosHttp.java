@@ -24,6 +24,7 @@ public class ServicosHttp {
     
     public static JSONObject getPostJson(HttpServletRequest request){
         String post = getPost(request);
+        System.out.print(post);
         JSONObject jObj = new JSONObject(post);
         return jObj;
     }

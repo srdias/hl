@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+        <script src="app.js" type="text/javascript"></script>
+        <link href="../Diretivas/App/estilo.css" rel="stylesheet" type="text/css"/>
+        <link href="../css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <script src="../js/bootstrap.js" type="text/javascript"></script>
+        <meta name="viewport" content="width=device-width, inicial-scale=1.0"/>
+    </head>
+    <body ng-app="contactsApp" ng-controller="contactsController" ng-init="edicao=false;">
+        <div class="container" >
+            <div>TODO write content</div>
+
+             
+            <br>
+            <button ng-click="edicao=!edicao">Edição={{edicao}}</button>
+            <br>
+            <br>
+            
+            <div ng-repeat="contato in contacts">
+                <div class="row">
+                    <editcontent 
+                        class="col-sm-12" 
+                        contato="contato" 
+                        save="funcaoControllerHtml" 
+                        sobrenome="contato.lastName"
+                        cidades="cidades"
+                        edicao="edicao">
+                    </editcontent>
+                </div>
+            </div>
+            
+            {{contacts[1].firstName}}
+            
+            <input class="form-control" ng-show="edicao" ng-model="testeX"/>
+            <br>
+            Nome digitado: {{testeX}}
+        </div>
+    </body>
+</html>

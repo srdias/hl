@@ -1,0 +1,16 @@
+{
+    "elements": {
+        "edicao": {
+            "attributes": {
+                "coluna": {},
+                "label": {},
+                "campo": {}
+            }
+        }
+    },
+    "attributes": {
+        "aria-expanded": {
+            "context": "button"
+        }
+    }
+}

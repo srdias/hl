@@ -17,8 +17,13 @@ import java.util.logging.Logger;
  */
 public class Conexao {
 
+    private static Connection conn = null;
+
     public static Connection conexao() {
-        Connection conn = null;
+        
+        if(conn!=null){
+            return Conexao.conn;
+        }
 
         try {
 //            Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -27,8 +32,8 @@ public class Conexao {
 //                    + "user=root&password=");
 
             
-             Class.forName("org.sqlite.JDBC");
-             conn = DriverManager.getConnection("jdbc:sqlite:\\fontes\\hl\\databaseSqLite\\hl.db");
+             Class.forName("org.sqlite.JDBC").newInstance();
+             Conexao.conn = DriverManager.getConnection("jdbc:sqlite:\\fontes\\hl\\databaseSqLite\\hl.db");
              
             // Do something with the Connection
         } catch (SQLException ex) {
@@ -36,10 +41,13 @@ public class Conexao {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-        } catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException | IllegalAccessException ex) {
+            System.out.println("Aqui 1");
             Logger.getLogger(Conexao.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException | UnsatisfiedLinkError ex) {
+         
         }
 
-        return conn;
+        return Conexao.conn;
     }
 }
