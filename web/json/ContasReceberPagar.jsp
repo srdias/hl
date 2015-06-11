@@ -2,11 +2,10 @@
 <%@page import="org.json.JSONArray"%>
 <%@page import="util.RsJson"%><%@page contentType="application/json" pageEncoding="UTF-8"%><%
     JSONArray objClientes = RsJson.getJsonBySQL("select * from clientes");
-    JSONArray objCidades = RsJson.getJsonBySQL("select * from cidades");
+    JSONArray objContasRP = RsJson.getJsonBySQL("select * from contasReceberPagar");
     
     JSONObject obj = new JSONObject();
     obj.put("clientes", objClientes);
-    obj.put("cidades", objCidades);
-    
+    obj.put("contasReceberPagar", objContasRP);
     out.print(obj);
 %>

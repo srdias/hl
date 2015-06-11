@@ -34,7 +34,7 @@
 <thead>
 <tr>
 <th>Codigo</th>
-<th>Nome da Conta</th>
+<th>Nome da Cidade</th>
 </tr>
 </thead>
 <tbody>

@@ -17,7 +17,7 @@ import org.json.JSONArray;
  */
 public class RsJson {
 
-    public static JSONArray getJsonBySQL(JspWriter out, String sql) throws IOException {
+    public static JSONArray getJsonBySQL(String sql) throws IOException {
         JSONArray lista = null;
         try {
             Connection con = util.Conexao.conexao();
@@ -27,13 +27,16 @@ public class RsJson {
             rs = s.executeQuery(sql);
             lista = ResultSetConverter.convert(rs);
         } catch (SQLException e) {
-            out.print(e.getStackTrace());
+            System.out.print(e.getStackTrace());
         }
         return lista;
     }
 
     public static void printJsonBySQL(JspWriter out, String sql) throws IOException {
-        out.print(RsJson.getJsonBySQL(out, sql));
+        
+        JSONArray obj = RsJson.getJsonBySQL(sql);
+        
+        out.print(obj.toString());
 
     }
 }

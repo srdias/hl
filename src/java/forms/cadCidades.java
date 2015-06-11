@@ -14,12 +14,12 @@ import hl.templateCadastros;
  *
  * @author AdrianoNB
  */
-public class cadContas extends templateCadastros{
+public class cadCidades extends templateCadastros{
 
     @Override
     public void builder() {
 
-        setArquivo("cadContas.jsp");
+        setArquivo("cadCidades.jsp");
         
         formulario.setTitulo("Contas");
         formulario.addFieldObject(new formFieldText("Codigo:", "id"));
@@ -28,7 +28,7 @@ public class cadContas extends templateCadastros{
         formulario.addButtonObject(new formButton("Voltar", "page.actionVoltar()"));
 
         tabela.addColuna(new TableColuna("id", "Codigo"));
-        tabela.addColuna(new TableColuna("nome", "Nome da Conta"));
+        tabela.addColuna(new TableColuna("nome", "Nome da Cidade"));
     }
 
 }

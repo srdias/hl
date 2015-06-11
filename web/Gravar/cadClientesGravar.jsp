@@ -4,7 +4,6 @@
 <%
     Tabela tabela = DataBase.getClientes();
     tabela.parseJsonRequest(request);
-    System.out.println("Aqui");
     out.print(tabela.retornoGravacao());    
 %>
 

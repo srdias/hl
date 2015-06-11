@@ -6,11 +6,13 @@
 package hl.database;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import util.ServicosHttp;
@@ -22,12 +24,14 @@ import util.ServicosHttp;
 public class Tabela {
 
     private ArrayList<Coluna> colunas;
+    private ArrayList<Fk> fks;
     private String nome;
     public JSONObject post;
 
     public Tabela(String nome) {
         this.nome = nome;
         colunas = new ArrayList<>();
+        fks = new ArrayList<>();
     }
 
     public void addColuna(Coluna coluna) {
@@ -85,7 +89,13 @@ public class Tabela {
     public void parseJson(JSONObject json) {
         for (Coluna coluna : colunas) {
             try {
-                setValor(coluna.getNome(), json.get(coluna.getNome()).toString());
+                Object obj = json.get(coluna.getNome());
+                if (obj instanceof JSONObject) {
+                    JSONObject jsonObj = (JSONObject) obj;
+                    setValor(coluna.getNome(), jsonObj.get("id").toString());
+                } else {
+                    setValor(coluna.getNome(), obj.toString());
+                }
             } catch (JSONException ex) {
                 setValor(coluna.getNome(), "");
                 System.err.println("Erro lendo coluna: " + coluna.getNome());
@@ -135,12 +145,14 @@ public class Tabela {
 
         for (Coluna coluna : colunas) {
             if (coluna.isPk()) {
-                if (sbWhere.length() != 0) {
-                    sbWhere.append(", ");
+                if (coluna.getValor() != null) {
+                    if (sbWhere.length() != 0) {
+                        sbWhere.append(", ");
+                    }
+                    sbWhere.append(coluna.getNome());
+                    sbWhere.append("=");
+                    sbWhere.append(coluna.getValorSQL());
                 }
-                sbWhere.append(coluna.getNome());
-                sbWhere.append("=");
-                sbWhere.append(coluna.getValorSQL());
             }
             if (sbColunas.length() != 0) {
                 sbColunas.append(", ");
@@ -152,8 +164,11 @@ public class Tabela {
         sb.append(sbColunas.toString());
         sb.append(" FROM ");
         sb.append(getNome());
-        sb.append(" WHERE ");
-        sb.append(sbWhere.toString());
+
+        if (sbWhere.length() != 0) {
+            sb.append(" WHERE ");
+            sb.append(sbWhere.toString());
+        }
 
         return sb.toString();
     }
@@ -235,18 +250,24 @@ public class Tabela {
         this.nome = nome;
     }
 
+    public void addFk(Fk fk) {
+        fks.add(fk);
+    }
+
+    public void revolveFk(Connection conn, JSONArray jsonData) {
+        System.out.println("fks tamanho: " + fks.size());
+        for (Fk fk : fks) {
+            fk.putDataFk(conn, jsonData);
+        }
+    }
+
     public int getProximoID(Connection con) {
 
         int retorno = 0;
 
         try {
-            java.sql.Statement s;
-            java.sql.ResultSet rs;
-            s = con.createStatement();
+            ResultSet rs = getResultSetBySQL(con, this.getCmdSelectNovaChave());
 
-            String existeRegistro = this.getCmdSelectNovaChave();
-
-            rs = s.executeQuery(existeRegistro);
             if (rs.next()) {
                 retorno = rs.getInt("maior");
             }
@@ -260,10 +281,26 @@ public class Tabela {
         return retorno;
     }
 
+    public ResultSet getResultSetBySQL(Connection con, String sql) {
+
+        ResultSet rs = null;
+
+        try {
+            java.sql.Statement s;
+            s = con.createStatement();
+
+            rs = s.executeQuery(sql);
+
+        } catch (SQLException ex) {
+        }
+
+        return rs;
+    }
+
     public String update() {
 
         String retorno = "";
-        String acao = "";
+        String acao;
 
         try {
             Connection con = util.Conexao.conexao();

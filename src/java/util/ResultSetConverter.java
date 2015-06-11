@@ -34,4 +34,23 @@ public class ResultSetConverter {
         return json;
     }
 
+    public static JSONObject convertRegistro(ResultSet rs)
+            throws SQLException, JSONException {
+        JSONObject obj = null;
+        ResultSetMetaData rsmd = rs.getMetaData();
+
+        int numColumns = rsmd.getColumnCount();
+
+        if (rs.next()) {
+            obj = new JSONObject();
+
+            for (int i = 1; i < numColumns + 1; i++) {
+                String column_name = rsmd.getColumnLabel(i);
+                obj.put(column_name, rs.getObject(column_name));
+            }
+        }
+
+        return obj;
+    }
+
 }

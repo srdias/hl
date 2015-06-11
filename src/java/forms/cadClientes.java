@@ -26,7 +26,7 @@ public class cadClientes extends templateCadastros {
         formulario.addFieldObject(new formFieldText("Codigo:", "id"));
         formulario.addFieldObject(new formFieldText("Nome:", "nome"));
         formulario.addFieldObject(new formFieldText("Endereço:", "endereco"));
-        formulario.addFieldObject(new formFieldSelect("Cidade:", "cidade_id", "cidades", "id", "nome"));
+        formulario.addFieldObject(new formFieldSelect("Cidade:", "cidade_id", "page.cidades", "id", "nome"));
         formulario.addFieldObject(new formFieldText("Preço:", "preco"));
         formulario.addFieldObject(new formFieldText("Taxas:", "taxas"));
         formulario.addButtonObject(new formButton("Gravar", "page.actionSave()"));
@@ -35,7 +35,7 @@ public class cadClientes extends templateCadastros {
         tabela.addColuna(new TableColuna("id", "Código"));
         tabela.addColuna(new TableColuna("nome", "Nome"));
         tabela.addColuna(new TableColuna("endereco", "Endereço"));
-        tabela.addColuna(new TableColuna("nomeCidade", "Cidade"));
+        tabela.addColuna(new TableColuna("cidade_id.nome", "Cidade"));
         tabela.addColuna(new TableColuna("preco", "Preços"));
         tabela.addColuna(new TableColuna("taxas", "Taxas"));
     }
