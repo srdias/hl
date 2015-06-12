@@ -1,4 +1,3 @@
-
 package hl.AngularJS;
 
 import java.util.ArrayList;
@@ -37,6 +36,26 @@ public class form {
 
     public void addFieldObject(formField obj) {
         fields.add(obj);
+    }
+
+    public formField findFieldObject(String nome) {
+        formField objRetorno = null;
+        for (formField field : fields) {
+            if (field.getDBName().equals(nome)) {
+                objRetorno = field;
+                break;
+            }
+        }
+        return objRetorno;
+    }
+
+    public void fieldObjectAddProp(String nomeObj, String nomeProp, String valor) {
+        formObject obj = this.findFieldObject(nomeObj);
+        if (obj != null) {
+            obj.putProp(nomeProp, valor);
+        }else{
+            System.out.println("Objeto nao encontrado: "+nomeObj);
+        }
     }
 
     public String getJsonData(String variavel) {
@@ -87,89 +106,89 @@ public class form {
 
         return sb.toString();
     }
+    /*
+     public String functionEditar() {
+     StringBuilder sb = new StringBuilder();
 
-    public String functionEditar() {
-        StringBuilder sb = new StringBuilder();
+     sb.append("\n\t\t\t\t");
+     sb.append("$scope.Editar = function(rec) {").append("\n");
 
-        sb.append("\n\t\t\t\t");
-        sb.append("$scope.Editar = function(rec) {").append("\n");
+     for (formField field : fields) {
+     sb.append("\t\t\t\t\t");
+     sb.append(field.getEdicaoAtribuicao());
+     sb.append(";\n");
+     }
 
-        for (formField field : fields) {
-            sb.append("\t\t\t\t\t");
-            sb.append(field.getEdicaoAtribuicao());
-            sb.append(";\n");
-        }
+     sb.append("\t\t\t\t");
+     sb.append("\t$scope.editando = true;").append("\n");
+     sb.append("\t\t\t\t}\n");
 
-        sb.append("\t\t\t\t");
-        sb.append("\t$scope.editando = true;").append("\n");
-        sb.append("\t\t\t\t}\n");
+     return sb.toString();
 
-        return sb.toString();
+     }
 
-    }
+     public String functionNovo() {
+     StringBuilder sb = new StringBuilder();
 
-    public String functionNovo() {
-        StringBuilder sb = new StringBuilder();
+     sb.append("\n\t\t\t\t");
+     sb.append("$scope.NovoRegistro = function(rec) {").append("\n");
 
-        sb.append("\n\t\t\t\t");
-        sb.append("$scope.NovoRegistro = function(rec) {").append("\n");
+     for (formField field : fields) {
+     sb.append("\t\t\t\t\t");
+     sb.append(field.getNovoInicializacao());
+     sb.append(";\n");
+     }
 
-        for (formField field : fields) {
-            sb.append("\t\t\t\t\t");
-            sb.append(field.getNovoInicializacao());
-            sb.append(";\n");
-        }
+     sb.append("\t\t\t\t");
+     sb.append("\t$scope.editando = true;").append("\n");
+     sb.append("\t\t\t\t}\n");
 
-        sb.append("\t\t\t\t");
-        sb.append("\t$scope.editando = true;").append("\n");
-        sb.append("\t\t\t\t}\n");
+     return sb.toString();
 
-        return sb.toString();
+     }
 
-    }
+     public String functionCarregaJson(String url, String variavelLista) {
 
-    public String functionCarregaJson(String url, String variavelLista) {
+     StringBuilder sb = new StringBuilder();
 
-        StringBuilder sb = new StringBuilder();
+     sb.append("\t$http.post(\"").append(url).append("\").success(function (data, status) {\n");
+     sb.append("\t\t\t\t\t");
+     sb.append(variavelLista);
+     sb.append("= data;\n");
+     sb.append("                });\n\n");
 
-        sb.append("\t$http.post(\"").append(url).append("\").success(function (data, status) {\n");
-        sb.append("\t\t\t\t\t");
-        sb.append(variavelLista);
-        sb.append("= data;\n");
-        sb.append("                });\n\n");
+     return sb.toString();
+     }
 
-        return sb.toString();
-    }
+     public String functionGravar(String url) {
 
-    public String functionGravar(String url) {
+     StringBuilder sb = new StringBuilder();
 
-        StringBuilder sb = new StringBuilder();
+     sb.append("$scope.Gravar = function () {");
+     sb.append(this.getJsonData("$scope.listaGravar"));
+     sb.append(";\n");
+     sb.append("$scope.editando = false;\n");
 
-        sb.append("$scope.Gravar = function () {");
-        sb.append(this.getJsonData("$scope.listaGravar"));
-        sb.append(";\n");
-        sb.append("$scope.editando = false;\n");
+     sb.append("$http.post(\"");
+     sb.append(url);
+     sb.append("\", $scope.listaGravar)");
+     sb.append(".success(function(data, status) {");
+     sb.append("$scope.resultado = data;");
+     sb.append("});\n");
+     sb.append("};\n");
 
-        sb.append("$http.post(\"");
-        sb.append(url);
-        sb.append("\", $scope.listaGravar)");
-        sb.append(".success(function(data, status) {");
-        sb.append("$scope.resultado = data;");
-        sb.append("});\n");
-        sb.append("};\n");
+     return sb.toString();
+     }
 
-        return sb.toString();
-    }
+     public String functionVoltar() {
 
-    public String functionVoltar() {
+     StringBuilder sb = new StringBuilder();
 
-        StringBuilder sb = new StringBuilder();
+     sb.append("\t\t$scope.Voltar = function () {");
+     sb.append("\t\t\t$scope.editando = false;\n");
+     sb.append("\t\t};\n");
 
-        sb.append("\t\t$scope.Voltar = function () {");
-        sb.append("\t\t\t$scope.editando = false;\n");
-        sb.append("\t\t};\n");
-
-        return sb.toString();
-    }
-
+     return sb.toString();
+     }
+     */
 }

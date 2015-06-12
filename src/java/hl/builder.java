@@ -9,6 +9,7 @@ import forms.cadCidades;
 import forms.cadClientes;
 import forms.cadContas;
 import forms.cadContasReceberPagar;
+import forms.cadVendas;
 
 /**
  *
@@ -21,6 +22,7 @@ public class builder {
         builder.gerar(new cadClientes());
         builder.gerar(new cadCidades());
         builder.gerar(new cadContasReceberPagar());
+        builder.gerar(new cadVendas());
     }
 
     public static void gerar(templateCadastros template) {

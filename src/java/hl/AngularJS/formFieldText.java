@@ -24,6 +24,7 @@ public class formFieldText extends formField {
                 + getProp("id", getName()) + " "
                 + habilitado
                 + getProp("class", "form-control")
+                + getProperties()
                 + " >\n"
                 + "</div>\n"
                 + "</div>\n";

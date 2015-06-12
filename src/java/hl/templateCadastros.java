@@ -27,7 +27,7 @@ public abstract class templateCadastros {
     public void gravarArquivo(String conteudo) {
         PrintWriter writer;
         try {
-            writer = new PrintWriter("C:\\fontes\\hl\\web\\novo\\templates\\"+getArquivo(), "utf-8");
+            writer = new PrintWriter("C:\\fontes\\hl\\web\\templates\\"+getArquivo(), "utf-8");
             writer.println(conteudo);
             writer.close();
         } catch (FileNotFoundException ex) {
@@ -46,7 +46,7 @@ public abstract class templateCadastros {
             String sCurrentLine;
             String sQuebra="";
 
-            br = new BufferedReader(new FileReader("C:\\fontes\\hl\\web\\templates\\cadContas.jsp"));
+            br = new BufferedReader(new FileReader("C:\\fontes\\hl\\web\\templates\\modelo.jsp"));
 
             while ((sCurrentLine = br.readLine()) != null) {
                 sb.append(sQuebra);

@@ -20,7 +20,7 @@ public abstract class formField extends formObject {
     }
 
     public String getName() {
-        return "page.recEdit."+name;
+        return "page.recEdit." + name;
     }
 
     public String getDBName() {
@@ -47,7 +47,7 @@ public abstract class formField extends formObject {
         sb.append(this.getDBName());
         return sb.toString();
     }
-    
+
     public String getNovoInicializacao() {
         StringBuilder sb = new StringBuilder();
         sb.append("$scope.");
@@ -56,8 +56,8 @@ public abstract class formField extends formObject {
         sb.append("'");
         return sb.toString();
     }
-    
-    public String getDataToDB(){
-        return "$scope."+this.getName();
+
+    public String getDataToDB() {
+        return "$scope." + this.getName();
     }
 }

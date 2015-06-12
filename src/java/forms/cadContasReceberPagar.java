@@ -39,14 +39,4 @@ public class cadContasReceberPagar extends templateCadastros {
         tabela.addColuna(new TableColuna("tipo_movimento_id.nome", "Tipo movimento"));
         tabela.addColuna(new TableColuna("valor_total", "Valor Total"));
     }
-    /*
-     Tabela tabela = new Tabela("contasReceberPagar");
-     tabela.addColuna(new Coluna("id", java.sql.Types.INTEGER, true));
-     tabela.addColuna(new Coluna("empresa_id", java.sql.Types.INTEGER));
-     tabela.addColuna(new Coluna("dt_emissao", java.sql.Types.DATE));
-     tabela.addColuna(new Coluna("valor_desconto", java.sql.Types.DECIMAL));
-     tabela.addColuna(new Coluna("valor_acrescimo", java.sql.Types.DECIMAL));
-     tabela.addColuna(new Coluna("valor_total", java.sql.Types.DECIMAL));
-     tabela.addColuna(new Coluna("observacao", java.sql.Types.CHAR, 1024));
-     */
 }

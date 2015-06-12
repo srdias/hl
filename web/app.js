@@ -27,6 +27,10 @@ sampleApp.config(['$routeProvider',
                     templateUrl: 'templates/cadCidades.jsp',
                     controller: 'cadCidades'
                 }).
+                when('/cadVendas', {
+                    templateUrl: 'templates/cadVendas.jsp',
+                    controller: 'cadVendas'
+                }).
                 when('/cadContasReceberPagar', {
                     templateUrl: 'templates/cadContasReceberPagar.jsp',
                     controller: 'cadContasReceberPagar'
@@ -193,6 +197,13 @@ sampleApp.service('serviceCadasrto', function ($http) {
                 page.registro = data.contasReceberPagar;
                 page.ajustarReferenciasTodas();
             });
+        },
+        retrieveVendas: function () {
+            $http.post('./json/vendas.jsp').success(function (data, status) {
+                page.clientes = data.clientes;
+                page.registro = data.vendas;
+                page.ajustarReferenciasTodas();
+            });
         }
     };
     this.setData = function (rec) {
@@ -242,6 +253,34 @@ sampleApp.controller('cadContasReceberPagar', function ($scope, DataBase, servic
     };
     $scope.page.urlGravar = "./Gravar/ContasReceberPagarGravar.jsp";
     $scope.page.retrieveContasRP();
+});
+
+sampleApp.controller('cadVendas', function ($scope, DataBase, serviceCadasrto, $http) {
+    $scope.page = serviceCadasrto.getPage();
+    $scope.page.recDefault = {
+        id: 0, 
+        dt_venda: '10/06/2015',
+        contasPagarReceber_id: 0, 
+        taxas: 0, 
+        observacao: ''
+    };
+    $scope.page.ajustarReferenciasRegistro = function (rec) {
+        $scope.page.setRefClientes(rec);
+    };
+    $scope.page.urlGravar = "./Gravar/vendasGravar.jsp";
+    $scope.page.retrieveVendas();
+    
+    $scope.chageCliente = function(){
+        $scope.page.recEdit.valor_unidade = $scope.page.recEdit.empresa_id.preco;
+        $scope.chageQtde();
+    }
+    
+    $scope.chageQtde = function(){
+        var total = $scope.page.recEdit.valor_unidade * $scope.page.recEdit.quantidade;
+        $scope.page.recEdit.taxas = (total * $scope.page.recEdit.empresa_id.taxas) / 100.0;
+        $scope.page.recEdit.total = total - $scope.page.recEdit.taxas;
+    }
+    
 });
 
 sampleApp.controller('cadCidades', function ($scope, DataBase, serviceCadasrto, $http) {

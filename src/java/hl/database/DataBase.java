@@ -14,6 +14,7 @@ public class DataBase {
         createTable(out, getContas());
         createTable(out, getContasReceberPagar());
         createTable(out, getContasReceberPagarParcelas());
+        createTable(out, getVendas());
     }
 
     public void createTable(JspWriter out, Tabela tabela) throws IOException {
@@ -107,6 +108,22 @@ public class DataBase {
         tabela.setNulo("dt_efetivacao", true);
         tabela.setNulo("observacao", true);
 
+        return tabela;
+    }
+
+    public static Tabela getVendas() {
+
+        Tabela tabela = new Tabela("vendas");
+        tabela.addColuna(new Coluna("id", java.sql.Types.INTEGER, true));
+        tabela.addColuna(new Coluna("empresa_id", java.sql.Types.INTEGER));
+        tabela.addColuna(new Coluna("dt_venda", java.sql.Types.DATE));
+        tabela.addColuna(new Coluna("valor_unidade", java.sql.Types.DECIMAL));
+        tabela.addColuna(new Coluna("quantidade", java.sql.Types.INTEGER));
+        tabela.addColuna(new Coluna("taxas", java.sql.Types.DECIMAL));
+        tabela.addColuna(new Coluna("total", java.sql.Types.DECIMAL));
+        tabela.addColuna(new Coluna("observacao", java.sql.Types.CHAR, 1024));
+        tabela.addColuna(new Coluna("contasPagarReceber_id", java.sql.Types.INTEGER));
+        
         return tabela;
     }
 

@@ -29,7 +29,8 @@
                                     <select  
                                         class="form-control"  
                                         ng-model="page.recEdit.cidade_id" 
-                                        ng-options="item.nome for item in page.cidades">
+                                        ng-options="item.nome for item in page.cidades" 
+                                        >
                                     </select>
                                 </div>
                             </div>

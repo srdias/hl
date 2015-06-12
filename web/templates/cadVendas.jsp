@@ -2,7 +2,7 @@
 <div class="row" ng-hide="!page.editar">
     <div class="col-lg-8">
         <form class="form-horizontal well">
-        <fieldset><legend>Clientes</legend><div class="control-group">
+        <fieldset><legend>Vendas</legend><div class="control-group">
 <label class="control-label" for="page.recEdit.id">Codigo:</label>
 <div class="controls">
 <input type="text" ng-model="page.recEdit.id" id="page.recEdit.id" ng-disabled="true" class="form-control" >
@@ -16,48 +16,43 @@
                                         class="form-control"  
                                         ng-model="page.recEdit.empresa_id" 
                                         ng-options="item.nome for item in page.clientes" 
-                                        >
+                                        ng-change="chageCliente()" >
                                     </select>
                                 </div>
                             </div>
 
 <div class="control-group">
-<label class="control-label" for="page.recEdit.dt_emissao">Emissão:</label>
+<label class="control-label" for="page.recEdit.dt_venda">Data Venda:</label>
 <div class="controls">
-<input type="text" ng-model="page.recEdit.dt_emissao" id="page.recEdit.dt_emissao" class="form-control" >
-</div>
-</div>
-
-                            <div class="control-group">
-                                <label class="control-label" for="page.recEdit.tipo_movimento_id">Tipo movimento:</label>
-                                <div class="controls">
-                                    <select  
-                                        class="form-control"  
-                                        ng-model="page.recEdit.tipo_movimento_id" 
-                                        ng-options="item.nome for item in page.tipo_movimento" 
-                                        >
-                                    </select>
-                                </div>
-                            </div>
-
-<div class="control-group">
-<label class="control-label" for="page.recEdit.valor_desconto">Desconto:</label>
-<div class="controls">
-<input type="text" ng-model="page.recEdit.valor_desconto" id="page.recEdit.valor_desconto" class="form-control" >
+<input type="text" ng-model="page.recEdit.dt_venda" id="page.recEdit.dt_venda" class="form-control" >
 </div>
 </div>
 
 <div class="control-group">
-<label class="control-label" for="page.recEdit.valor_acrescimo">Acrescimo:</label>
+<label class="control-label" for="page.recEdit.valor_unidade">Valor unidade:</label>
 <div class="controls">
-<input type="text" ng-model="page.recEdit.valor_acrescimo" id="page.recEdit.valor_acrescimo" class="form-control" >
+<input type="text" ng-model="page.recEdit.valor_unidade" id="page.recEdit.valor_unidade" class="form-control"ng-change="chageQtde()"  >
 </div>
 </div>
 
 <div class="control-group">
-<label class="control-label" for="page.recEdit.valor_total">Total:</label>
+<label class="control-label" for="page.recEdit.quantidade">Quantidade:</label>
 <div class="controls">
-<input type="text" ng-model="page.recEdit.valor_total" id="page.recEdit.valor_total" class="form-control" >
+<input type="text" ng-model="page.recEdit.quantidade" id="page.recEdit.quantidade" class="form-control"ng-change="chageQtde()"  >
+</div>
+</div>
+
+<div class="control-group">
+<label class="control-label" for="page.recEdit.taxas">Taxas:</label>
+<div class="controls">
+<input type="text" ng-model="page.recEdit.taxas" id="page.recEdit.taxas" class="form-control" >
+</div>
+</div>
+
+<div class="control-group">
+<label class="control-label" for="page.recEdit.total">Total:</label>
+<div class="controls">
+<input type="text" ng-model="page.recEdit.total" id="page.recEdit.total" class="form-control" >
 </div>
 </div>
 
@@ -65,6 +60,13 @@
 <label class="control-label" for="page.recEdit.observacao">Observações:</label>
 <div class="controls">
 <input type="text" ng-model="page.recEdit.observacao" id="page.recEdit.observacao" class="form-control" >
+</div>
+</div>
+
+<div class="control-group">
+<label class="control-label" for="page.recEdit.contasPagarReceber_id">ID contas a receber:</label>
+<div class="controls">
+<input type="text" ng-model="page.recEdit.contasPagarReceber_id" id="page.recEdit.contasPagarReceber_id" class="form-control" >
 </div>
 </div>
 
@@ -87,18 +89,24 @@
 <tr>
 <th>Código</th>
 <th>Empresa</th>
-<th>Emissão</th>
-<th>Tipo movimento</th>
+<th>Data Venda</th>
+<th>Quantidade</th>
+<th>Valor Unidade</th>
+<th>Taxas</th>
 <th>Valor Total</th>
+<th>Observações</th>
 </tr>
 </thead>
 <tbody>
 <tr ng-repeat="item in page.registro" ng-click="page.actionEditar(item.id)">
 <td>{{item.id}}</td>
 <td>{{item.empresa_id.nome}}</td>
-<td>{{item.dt_emissao}}</td>
-<td>{{item.tipo_movimento_id.nome}}</td>
-<td>{{item.valor_total}}</td>
+<td>{{item.dt_venda}}</td>
+<td>{{item.quantidade}}</td>
+<td>{{item.valor_unidade}}</td>
+<td>{{item.taxas}}</td>
+<td>{{item.total}}</td>
+<td>{{item.observacao}}</td>
 </tr>
 </tbody>
 </table>
