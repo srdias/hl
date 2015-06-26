@@ -1,0 +1,21 @@
+
+<div class="row" ng-show="!edicao && !EditarEste">
+    <div class="col-sm-1"> {{registro.firstName}} </div>
+    <div class="col-sm-2"> {{registro.lastName}} </div>
+    <div class="col-sm-3"> {{registro.cidade.Cidade}} </div>
+    <div class="col-sm-4">  <button ng-click="Editar()">Editar</button> </div>
+</div>
+<div class="row" ng-show="edicao || EditarEste" >
+    <div class="col-sm-1"><input class="form-control" ng-model="registro.firstName"/></div>
+    <div class="col-sm-2"><input class="form-control" ng-model="registro.lastName"/></div>
+    <div class="col-md-3">
+        <select 
+            class="form-control"
+            ng-model="registro.cidade"
+            ng-options="cid.Cidade for cid in cidades">
+        </select>
+    </div>
+    <div class="col-sm-4"><button ng-click="Editar()">Salvar</button>
+    <button ng-click="save()">Testar Diretica</button>
+    <button ng-click="saveAction(registro)">Testar Controle</button></div>
+</div>

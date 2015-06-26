@@ -1,0 +1,69 @@
+<div class="page-header">
+    <h1>Extrato</h1>
+</div>
+
+<button ng-init="filtrar=false" ng-show="!filtrar" type="submit" class="btn btn-default" ng-click="filtrar=!filtrar">Filtrar</button>
+
+<div class="panel panel-default" ng-show="filtrar">
+    <div class="panel-heading">
+        Filtrar dados
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-4">
+                <form role="form">
+                    <div class="form-group">
+                        <label>Data início:</label>
+                        <input class="form-control" ng-model="dados.dtInicio">
+                        <label>Data fim:</label>
+                        <input class="form-control" ng-model="dados.dtFim">
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="dados.empresa_id">
+                            <input value="1" type="checkbox" ng-model="dados.selecaoCliente"> Selecionar cliente
+                        </label>
+                        <div class="controls">
+                            <select  
+                                class="form-control"  
+                                ng-model="dados.empresa_id" 
+                                ng-options="item.nome for item in page.clientes" 
+                                ng-hide="!dados.selecaoCliente"
+                                 >
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+
+                    <button type="submit" class="btn btn-default" ng-click="atualizaRelatorio();filtrar=false;">Atualizar</button>
+                    <button type="submit" class="btn btn-default" ng-click="filtrar=false">Cancelar</button>
+                </form>
+            </div>
+        </div>
+        <!-- /.row (nested) -->
+    </div>
+    <!-- /.panel-body -->
+</div>
+
+<br>
+
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Data</th>
+            <th>Valor</th>
+            <th>Saldo</th>
+            <th>Observação</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in page.registro">
+            <td>{{item.nomeCliente}}</td>
+            <td class="text-center">{{item.dt_emissao}}</td>
+            <td class="text-right">{{item.cpValor}}</td>
+            <td class="text-right">{{item.acumulado}}</td>
+            <td>{{item.observacao}}</td>
+        </tr>
+    </tbody>
+</table>

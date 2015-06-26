@@ -58,6 +58,15 @@ public class form {
         }
     }
 
+    public void fielSetVisible(String nomeObj, boolean visivel) {
+        formObject obj = this.findFieldObject(nomeObj);
+        if (obj != null) {
+            obj.setVisivel(visivel);
+        }else{
+            System.out.println("Objeto nao encontrado: "+nomeObj);
+        }
+    }
+
     public String getJsonData(String variavel) {
 
         String identa = "\t\t\t\t\t\t";
@@ -103,7 +112,6 @@ public class form {
                 + "        </fieldset>\n"
                 + "</form>"
         );
-
         return sb.toString();
     }
     /*

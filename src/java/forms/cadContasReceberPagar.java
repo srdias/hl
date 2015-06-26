@@ -26,6 +26,7 @@ public class cadContasReceberPagar extends templateCadastros {
         formulario.addFieldObject(new formFieldSelect("Empresa:", "empresa_id", "page.clientes", "id", "nome"));
         formulario.addFieldObject(new formFieldText("Emissão:", "dt_emissao"));
         formulario.addFieldObject(new formFieldSelect("Tipo movimento:", "tipo_movimento_id", "page.tipo_movimento", "id", "nome"));
+        formulario.addFieldObject(new formFieldSelect("Conta:", "conta_id", "page.contas", "id", "nome"));
         formulario.addFieldObject(new formFieldText("Desconto:", "valor_desconto"));
         formulario.addFieldObject(new formFieldText("Acrescimo:", "valor_acrescimo"));
         formulario.addFieldObject(new formFieldText("Total:", "valor_total"));
@@ -35,8 +36,10 @@ public class cadContasReceberPagar extends templateCadastros {
 
         tabela.addColuna(new TableColuna("id", "Código"));
         tabela.addColuna(new TableColuna("empresa_id.nome", "Empresa"));
-        tabela.addColuna(new TableColuna("dt_emissao", "Emissão"));
+        tabela.addColuna(new TableColuna("dt_emissao", "Emissão", TableColuna.ALIGN_CENTER));
         tabela.addColuna(new TableColuna("tipo_movimento_id.nome", "Tipo movimento"));
-        tabela.addColuna(new TableColuna("valor_total", "Valor Total"));
+        tabela.addColuna(new TableColuna("conta_id.nome", "Conta"));
+        tabela.addColuna(new TableColuna("valor_total", "Valor Total", TableColuna.ALIGN_RIGTH));
+        tabela.addColuna(new TableColuna("observacao", "Observações"));
     }
 }

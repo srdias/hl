@@ -5,9 +5,7 @@
  */
 package hl.AngularJS;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import javax.servlet.jsp.JspWriter;
 
 /**
  *
@@ -27,7 +25,7 @@ public class Table extends Html {
         colunas.add(coluna);
     }
 
-    public String buildTable(){
+    public String buildTable() {
         StringBuilder sb = new StringBuilder();
 
         sb.append("<table class=\"table table-bordered table-striped table-hover\">\n");
@@ -50,7 +48,11 @@ public class Table extends Html {
         sb.append(">\n");
 
         for (TableColuna coluna : colunas) {
-            sb.append("<td>{{item.");
+            String align = "";
+            if (coluna.getAlign() == TableColuna.ALIGN_RIGTH) {
+                align = " class=\"text-right\"";
+            }
+            sb.append("<td").append(align).append(">{{item.");
             sb.append(coluna.getName());
             sb.append("}}</td>\n");
         }

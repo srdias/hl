@@ -8,7 +8,6 @@ package hl.database;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONArray;
@@ -74,7 +73,7 @@ public class Fk {
             JSONObject obj = json.getJSONObject(i);
             int valor = obj.getInt(getColunaTabelaPrincipal());
 
-            ResultSet rs = getTabelaPrincipal().getResultSetBySQL(conn, sql + valor);
+            ResultSet rs = getTabelaPrincipal().getResultSetBySQL(sql + valor);
             if (rs != null) {
                 try {
                     objRegistro = ResultSetConverter.convertRegistro(rs);

@@ -20,24 +20,18 @@ public class Conexao {
     private static Connection conn = null;
 
     public static Connection conexao() {
-        
-        if(conn!=null){
+
+        if (conn != null) {
             return Conexao.conn;
         }
 
         try {
-//            Class.forName("com.mysql.jdbc.Driver").newInstance();
-//
-//            conn = DriverManager.getConnection("jdbc:mysql://localhost/hidrolive?"
-//                    + "user=root&password=");
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            //conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/hidrolive?zeroDateTimeBehavior=convertToNull&user=root&password=");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/teste?zeroDateTimeBehavior=convertToNull&user=root&password=");
 
-            
-             Class.forName("org.sqlite.JDBC").newInstance();
-             Conexao.conn = DriverManager.getConnection("jdbc:sqlite:\\fontes\\hl\\databaseSqLite\\hl.db");
-             
-            // Do something with the Connection
+
         } catch (SQLException ex) {
-            // handle any errors
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
@@ -45,7 +39,7 @@ public class Conexao {
             System.out.println("Aqui 1");
             Logger.getLogger(Conexao.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException | UnsatisfiedLinkError ex) {
-         
+
         }
 
         return Conexao.conn;

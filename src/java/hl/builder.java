@@ -9,6 +9,7 @@ import forms.cadCidades;
 import forms.cadClientes;
 import forms.cadContas;
 import forms.cadContasReceberPagar;
+import forms.cadMovContas;
 import forms.cadVendas;
 
 /**
@@ -19,6 +20,7 @@ public class builder {
 
     public static void main(String args[]) {
         builder.gerar(new cadContas());
+        builder.gerar(new cadMovContas());
         builder.gerar(new cadClientes());
         builder.gerar(new cadCidades());
         builder.gerar(new cadContasReceberPagar());

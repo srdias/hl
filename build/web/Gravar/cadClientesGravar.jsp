@@ -2,8 +2,8 @@
 <%@page import="hl.database.DataBase"%>
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-    Tabela tabela = DataBase.getVendas();
+    Tabela tabela = DataBase.getClientes();
     tabela.parseJsonRequest(request);
-    out.print(tabela.retornoGravacao());
+    out.print(tabela.retornoGravacao());    
 %>
 

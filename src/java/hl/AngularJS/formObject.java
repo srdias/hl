@@ -15,6 +15,7 @@ import java.util.Properties;
 public abstract class formObject extends Html {
 
     private Properties props;
+    private boolean visivel=true;
 
     @Override
     public abstract String toString();
@@ -47,6 +48,14 @@ public abstract class formObject extends Html {
             sb.append(" ");
         }
         return sb.toString();
+    }
+
+    public boolean isVisivel() {
+        return visivel;
+    }
+
+    public void setVisivel(boolean visivel) {
+        this.visivel = visivel;
     }
 
 }

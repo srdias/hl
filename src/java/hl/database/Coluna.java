@@ -63,12 +63,25 @@ public class Coluna {
         return valor;
     }
 
+    public Integer getValorInteger() {
+        return Integer.parseInt(valor);
+    }
+
     public void setValor(String valor) {
         this.valor = valor;
     }
 
     public String getValorSQL() {
-        return "'" + this.valor + "'";
+        
+        String retorno;
+        
+        if(this.getTipo() == java.sql.Types.INTEGER || this.getTipo() == java.sql.Types.DECIMAL){
+            retorno = this.valor;
+        }else{
+            retorno = "'" + this.valor + "'";
+        }
+        
+        return retorno;
     }
 
     public Integer getTamanho() {

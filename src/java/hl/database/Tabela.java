@@ -12,9 +12,10 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import static util.ResultSetConverter.formatDate;
+import static util.ResultSetConverter.formatDecimal;
 import util.ServicosHttp;
 
 /**
@@ -23,15 +24,15 @@ import util.ServicosHttp;
  */
 public class Tabela {
 
+    private Connection con;
+
     private ArrayList<Coluna> colunas;
-    private ArrayList<Fk> fks;
     private String nome;
-    public JSONObject post;
+    private JSONObject post;
 
     public Tabela(String nome) {
         this.nome = nome;
         colunas = new ArrayList<>();
-        fks = new ArrayList<>();
     }
 
     public void addColuna(Coluna coluna) {
@@ -73,6 +74,15 @@ public class Tabela {
         return valor;
     }
 
+    public Integer getValorInteger(String nomeColuna) {
+        int valor = 0;
+        Coluna coluna = findColuna(nomeColuna);
+        if (coluna != null) {
+            valor = coluna.getValorInteger();
+        }
+        return valor;
+    }
+
     public void setValorInicial(String nomeColuna, String valor) {
         Coluna coluna = findColuna(nomeColuna);
         if (coluna != null) {
@@ -94,13 +104,62 @@ public class Tabela {
                     JSONObject jsonObj = (JSONObject) obj;
                     setValor(coluna.getNome(), jsonObj.get("id").toString());
                 } else {
-                    setValor(coluna.getNome(), obj.toString());
+                    String data = obj.toString();
+                    switch (coluna.getTipo()) {
+                        case java.sql.Types.DATE: {
+                            data = data.substring(6, 10) + "-"
+                                    + data.substring(3, 5) + "-"
+                                    + data.substring(0, 2);
+                            break;
+                        }
+                        case java.sql.Types.INTEGER:
+                        case java.sql.Types.DECIMAL: {
+                            data = data.replaceAll("\\.", "");
+                            data = data.replaceAll(",", ".");
+                            break;
+                        }
+                    }
+                    setValor(coluna.getNome(), data);
                 }
             } catch (JSONException ex) {
                 setValor(coluna.getNome(), "");
                 System.err.println("Erro lendo coluna: " + coluna.getNome());
             }
         }
+    }
+
+    public JSONObject getJson() {
+        JSONObject json = new JSONObject();
+        for (Coluna coluna : colunas) {
+            try {
+                if (coluna.getTipo() == java.sql.Types.DATE) {
+                    String lsData = formatDate(coluna.getValor());
+                    json.put(coluna.getNome(), lsData);
+//                    json.put(coluna.getNome(), Double.parseDouble(coluna.getValorSQL()));
+                } else if (coluna.getTipo() == java.sql.Types.DECIMAL) {
+//                    json.put(coluna.getNome(), Double.parseDouble(coluna.getValorSQL()));
+                    String lsData = formatDecimal(Double.valueOf(coluna.getValor()));
+                    json.put(coluna.getNome(), lsData);
+
+                } else if (coluna.getTipo() == java.sql.Types.INTEGER) {
+//                    json.put(coluna.getNome(), coluna.getValorSQL());
+                    String lsData = formatDecimal(Integer.valueOf(coluna.getValor()));
+                    json.put(coluna.getNome(), lsData);
+
+                } else {
+                    json.put(coluna.getNome(), coluna.getValor());
+                }
+
+            } catch (JSONException ex) {
+                setValor(coluna.getNome(), "");
+                System.err.println("Erro lendo coluna: " + coluna.getNome());
+            }
+        }
+
+        JSONObject jsonRec = new JSONObject();
+        jsonRec.put("rec", json);
+
+        return jsonRec;
     }
 
     public String getCmdUpdate() {
@@ -250,23 +309,22 @@ public class Tabela {
         this.nome = nome;
     }
 
-    public void addFk(Fk fk) {
-        fks.add(fk);
-    }
-
-    public void revolveFk(Connection conn, JSONArray jsonData) {
-        System.out.println("fks tamanho: " + fks.size());
-        for (Fk fk : fks) {
-            fk.putDataFk(conn, jsonData);
-        }
-    }
-
-    public int getProximoID(Connection con) {
+//    public void addFk(Fk fk) {
+//        fks.add(fk);
+//    }
+//
+//    public void revolveFk(JSONArray jsonData) {
+//        System.out.println("fks tamanho: " + fks.size());
+//        for (Fk fk : fks) {
+//            fk.putDataFk(con, jsonData);
+//        }
+//    }
+    public int getProximoID() {
 
         int retorno = 0;
 
         try {
-            ResultSet rs = getResultSetBySQL(con, this.getCmdSelectNovaChave());
+            ResultSet rs = getResultSetBySQL(this.getCmdSelectNovaChave());
 
             if (rs.next()) {
                 retorno = rs.getInt("maior");
@@ -281,7 +339,7 @@ public class Tabela {
         return retorno;
     }
 
-    public ResultSet getResultSetBySQL(Connection con, String sql) {
+    public ResultSet getResultSetBySQL(String sql) {
 
         ResultSet rs = null;
 
@@ -289,12 +347,38 @@ public class Tabela {
             java.sql.Statement s;
             s = con.createStatement();
 
+            System.out.println("comando:" + sql);
             rs = s.executeQuery(sql);
 
         } catch (SQLException ex) {
+            System.out.println("Erro:" + ex.getMessage());
         }
 
         return rs;
+    }
+
+    public ResultSet executarComando(String sql) {
+
+        ResultSet rs = null;
+
+        try {
+            java.sql.Statement s;
+            s = con.createStatement();
+
+            System.out.println("comando:" + sql);
+            s.executeUpdate(sql);
+
+        } catch (SQLException ex) {
+            System.out.println("Erro:" + ex.getMessage());
+        }
+
+        return rs;
+    }
+
+    public void conectar() {
+        if (con == null) {
+            con = util.Conexao.conexao();
+        }
     }
 
     public String update() {
@@ -303,31 +387,27 @@ public class Tabela {
         String acao;
 
         try {
-            Connection con = util.Conexao.conexao();
-            java.sql.Statement s;
+            conectar();
             java.sql.ResultSet rs;
-            s = con.createStatement();
 
             String existeRegistro = this.getCmdSelect();
 
             System.out.println(existeRegistro);
-            rs = s.executeQuery(existeRegistro);
+            rs = getResultSetBySQL(existeRegistro);
             String comando;
             if (rs.next()) {
                 acao = "Exite";
                 comando = this.getCmdUpdate();
             } else {
                 acao = "Nao existe";
-                System.out.println("acao:" + acao);
 
                 if (this.getValor("id").equals("0")) {
-                    this.setValor("id", Integer.toString(this.getProximoID(con)));
+                    this.setValor("id", Integer.toString(this.getProximoID()));
                 }
                 comando = this.getCmdInsert();
-                System.out.println("comando:" + comando);
             }
 
-            s.executeUpdate(comando);
+            executarComando(comando);
 
             JSONObject obj = new JSONObject();
             obj.put("Resultato", acao);
@@ -338,6 +418,9 @@ public class Tabela {
         } catch (SQLException ex) {
             Logger.getLogger(Tabela.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        Triggers triggers = new Triggers(this);
+        triggers.trigger();
 
         return retorno;
     }
@@ -368,5 +451,21 @@ public class Tabela {
         this.post.put("id", getValor("id"));
         obj.put("rec", this.post);
         return obj.toString();
+    }
+
+    public Connection getCon() {
+        return con;
+    }
+
+    public void setCon(Connection con) {
+        this.con = con;
+    }
+
+    public JSONObject getPost() {
+        return post;
+    }
+
+    public void setPost(JSONObject post) {
+        this.post = post;
     }
 }

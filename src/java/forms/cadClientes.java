@@ -36,8 +36,8 @@ public class cadClientes extends templateCadastros {
         tabela.addColuna(new TableColuna("nome", "Nome"));
         tabela.addColuna(new TableColuna("endereco", "Endereço"));
         tabela.addColuna(new TableColuna("cidade_id.nome", "Cidade"));
-        tabela.addColuna(new TableColuna("preco", "Preços"));
-        tabela.addColuna(new TableColuna("taxas", "Taxas"));
+        tabela.addColuna(new TableColuna("preco", "Preços", TableColuna.ALIGN_RIGTH));
+        tabela.addColuna(new TableColuna("taxas", "Taxas", TableColuna.ALIGN_RIGTH));
     }
 
 }

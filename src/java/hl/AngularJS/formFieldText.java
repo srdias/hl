@@ -8,21 +8,24 @@ public class formFieldText extends formField {
 
     @Override
     public String toString() {
-        String habilitado="";
-        
-        if(getName().endsWith(".id")){
-            habilitado=getProp("ng-disabled","true")+" ";
+        String visivel = "";
+
+        if (getName().endsWith(".id")) {
+            putProp("ng-disabled", "true");
         }
-        
+
+        if (!isVisivel()) {
+            visivel = getProp("ng-show", "false") + " ";
+        }
+
         String campo
-                = "<div class=\"control-group\">\n"
+                = "<div " + visivel + " class=\"control-group\">\n"
                 + "<label class=\"control-label\" " + getProp("for", getName()) + ">" + getLabel() + "</label>\n"
                 + "<div class=\"controls\">\n"
                 + "<input "
                 + getProp("type", "text") + " "
                 + getProp("ng-model", getName()) + " "
                 + getProp("id", getName()) + " "
-                + habilitado
                 + getProp("class", "form-control")
                 + getProperties()
                 + " >\n"

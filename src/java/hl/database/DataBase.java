@@ -11,10 +11,24 @@ public class DataBase {
 
         createTable(out, getCidades());
         createTable(out, getClientes());
-        createTable(out, getContas());
         createTable(out, getContasReceberPagar());
-        createTable(out, getContasReceberPagarParcelas());
         createTable(out, getVendas());
+        createTable(out, getContas());
+        createTable(out, getMovContas());
+        
+    }
+    
+    public static Tabela getTabelaByName(String name){
+        switch(name){
+            case "vendas": return DataBase.getVendas();
+            case "clientes": return DataBase.getClientes();
+            case "contas": return DataBase.getContas();
+            case "cidades": return DataBase.getCidades();
+            case "contasReceberPagar": return DataBase.getContasReceberPagar();
+            case "movContas": return DataBase.getMovContas();
+        }
+        
+        return (Tabela)null;
     }
 
     public void createTable(JspWriter out, Tabela tabela) throws IOException {
@@ -49,13 +63,13 @@ public class DataBase {
         tabela.addColuna(new Coluna("preco", java.sql.Types.DECIMAL));
         tabela.addColuna(new Coluna("taxas", java.sql.Types.DECIMAL));
         
-        Fk fk = new Fk();
-        fk.setTabelaPrincipal(tabela);
-        fk.setTabelaReferenciada(getCidades());
-        fk.setColunaTabelaPrincipal("cidade_id");
-        fk.setColunaTabelaReferenciada("id");
-        
-        tabela.addFk(fk);
+//        Fk fk = new Fk();
+//        fk.setTabelaPrincipal(tabela);
+//        fk.setTabelaReferenciada(getCidades());
+//        fk.setColunaTabelaPrincipal("cidade_id");
+//        fk.setColunaTabelaReferenciada("id");
+//        
+//        tabela.addFk(fk);
         
         return tabela;
     }
@@ -85,31 +99,19 @@ public class DataBase {
         tabela.addColuna(new Coluna("empresa_id", java.sql.Types.INTEGER));
         tabela.addColuna(new Coluna("dt_emissao", java.sql.Types.DATE));
         tabela.addColuna(new Coluna("tipo_movimento_id", java.sql.Types.INTEGER));
+        tabela.addColuna(new Coluna("conta_id", java.sql.Types.INTEGER));
         tabela.addColuna(new Coluna("valor_desconto", java.sql.Types.DECIMAL));
         tabela.addColuna(new Coluna("valor_acrescimo", java.sql.Types.DECIMAL));
         tabela.addColuna(new Coluna("valor_total", java.sql.Types.DECIMAL));
         tabela.addColuna(new Coluna("observacao", java.sql.Types.CHAR, 1024));
+        tabela.addColuna(new Coluna("movcontas_id", java.sql.Types.INTEGER));
+        
+        tabela.setValorInicial("conta_id","0");
+        tabela.setValorInicial("movcontas_id","0");
 
         return tabela;
     }
 
-    public static Tabela getContasReceberPagarParcelas() {
-
-        Tabela tabela = new Tabela("contasReceberPagarParcelas");
-        tabela.addColuna(new Coluna("id", java.sql.Types.INTEGER, true));
-        tabela.addColuna(new Coluna("contasReceberPagar_id", java.sql.Types.INTEGER));
-        tabela.addColuna(new Coluna("dt_prevista", java.sql.Types.DATE));
-        tabela.addColuna(new Coluna("dt_efetivacao", java.sql.Types.DATE));
-        tabela.addColuna(new Coluna("numeroCheque", java.sql.Types.CHAR, 15));
-        tabela.addColuna(new Coluna("valor", java.sql.Types.DECIMAL));
-        tabela.addColuna(new Coluna("observacao", java.sql.Types.CHAR, 60));
-
-        tabela.setNulo("numeroCheque", true);
-        tabela.setNulo("dt_efetivacao", true);
-        tabela.setNulo("observacao", true);
-
-        return tabela;
-    }
 
     public static Tabela getVendas() {
 
@@ -127,4 +129,16 @@ public class DataBase {
         return tabela;
     }
 
+    public static Tabela getMovContas() {
+
+        Tabela tabela = new Tabela("movContas");
+        tabela.addColuna(new Coluna("id", java.sql.Types.INTEGER, true));
+        tabela.addColuna(new Coluna("dt_movto", java.sql.Types.DATE));
+        tabela.addColuna(new Coluna("conta_debito_id", java.sql.Types.INTEGER));
+        tabela.addColuna(new Coluna("conta_credito_id", java.sql.Types.INTEGER));
+        tabela.addColuna(new Coluna("valor", java.sql.Types.DECIMAL));
+        tabela.addColuna(new Coluna("observacao", java.sql.Types.CHAR, 60));
+
+        return tabela;
+    }
 }
