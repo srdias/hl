@@ -19,14 +19,12 @@ public class ServicosHttp {
             e.printStackTrace();
         }
 
-        if(sb.length()==0){
-            sb.append("{}");
-        }
         return sb.toString();
     }
     
     public static JSONObject getPostJson(HttpServletRequest request){
         String post = getPost(request);
+        System.out.print(post);
         JSONObject jObj = new JSONObject(post);
         return jObj;
     }
@@ -41,5 +39,5 @@ public class ServicosHttp {
             System.out.println(key + " : " + o);
         }
     }
-
+    
 }
